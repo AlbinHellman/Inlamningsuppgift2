@@ -1,0 +1,49 @@
+﻿<EditForm Model="@user" OnValidSubmit="@HandleValidSubmit">
+    <div class="mb-3">
+        <label for="firstname" class="form-label">User FirstName</label>
+        <InputText id="firstname" class="form-control" @bind-Value="user.FirstName" />
+
+    </div>
+    <div class="mb-3">
+        <label for="lastname" class="form-label">LastName</label>
+        <InputTextArea id="lastname" class="form-control" @bind-Value="user.LastName" />
+    </div>
+    <div class="mb-3">
+        <label for="lastname" class="form-label">PhoneNumber</label>
+        <InputTextArea id="lastname" class="form-control" @bind-Value="user.PhoneNumber" />
+    </div>
+    <div class="mb-3">
+        <label for="lastname" class="form-label">Email</label>
+        <InputTextArea id="lastname" class="form-control" @bind-Value="user.Email" />
+    </div>
+    <div class="mb-3">
+        <label for="lastname" class="form-label">Password</label>
+        <InputTextArea id="lastname" class="form-control" @bind-Value="user.Password" />
+    </div>
+    <div class="mb-3">
+        <label for="lastname" class="form-label">Business</label>
+        <InputTextArea id="lastname" class="form-control" @bind-Value="user.Business" />
+    </div>
+    <div class="mb-3">
+        <label for="lastname" class="form-label">Private</label>
+        <InputTextArea id="lastname" class="form-control" @bind-Value="user.Private" />
+    </div>
+    <div class="mb-3">
+        <button class="btn btn-secondary" type="submit">Läggtill ny användare</button>
+    </div>
+</EditForm>
+
+
+@code {
+    private User user = new();
+
+    private async Task HandleValidSubmit()
+    {
+        await Http.PostAsJsonAsync("https://localhost:44320/api/users", user);
+        user = new();
+
+
+        StateHasChanged();
+    }
+
+}

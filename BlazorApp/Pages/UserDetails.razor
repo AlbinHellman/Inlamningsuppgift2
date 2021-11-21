@@ -1,0 +1,27 @@
+﻿@page "/user/{id}"
+
+<div class="container mt-5">
+    <h3>UserDetails</h3>
+    <h5>@Item.FirstName</h5>
+    <h5>@Item.LastName</h5>
+    <p>@Item.PhoneNumber</p>
+    <p>@Item.Email</p>
+    <p2>@Item.Password</p2>
+    <small>@Item.Business</small>
+    <small>@Item.Private</small>
+</div>
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    public User Item { get; set; } = new();
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Item = await Http.GetFromJsonAsync<User>($"https://localhost:44320/api/Users/{Id}");
+    }
+
+}

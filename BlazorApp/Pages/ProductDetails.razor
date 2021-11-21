@@ -1,0 +1,58 @@
+﻿@page "/product/{id}"
+
+<div class="d-flex justify-content-center">
+    <i class="fas fa-shopping-cart me-2"></i>
+    <div>
+    <h3>@namn</h3>
+        </div>
+    <div>
+    <h3>@desc</h3>
+        </div>
+    <div>
+    <h3>@siz</h3>
+        </div>
+</div>
+
+<div class="container mt-5">
+    <h3>ProductDetails</h3>
+    <img src="/hatt.jpg" class="card-img-top" alt="...">
+    <p>@Item.Name</p>
+    <p>@Item.Description</p>
+    ´<p>@Item.Size</p>
+    <div class="mb-5">
+        <button class="btn btn-secondary"
+                @onclick="@(() => AddProduct(Item))">
+            Lägg till i kundvagnen
+        </button>
+    </div>
+
+
+</div>
+
+@code {
+    public IList<Product> products;
+    public IList<Product> cart = new List<Product>();
+    private string namn;
+    private string desc;
+    private string siz;
+
+    [Parameter]
+    public string Id { get; set; }
+
+    public Product Item { get; set; } = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Item = await Http.GetFromJsonAsync<Product>($"https://localhost:44320/api/Products/{Id}");
+    }
+
+    private void AddProduct(Product product)
+    {
+        cart.Add(product);
+        namn += product.Name;
+        desc += product.Description;
+        siz += product.Size;
+    }
+
+}

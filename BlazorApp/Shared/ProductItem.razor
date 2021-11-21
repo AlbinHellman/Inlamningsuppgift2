@@ -1,0 +1,54 @@
+﻿
+
+
+<NavLink href="@Href" class="list-group-item-action">
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <div class="col">
+            <div class="card">
+                <img src="/hatt.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">@Item.Name</h5>
+
+                    <p class="card-text">@Item.Description</p>
+                    <p class="card-text">@Item.Size</p>
+                    <p class="card-text">@Item.Description</p>
+                    <small class="card-text">@Item.Id</small>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</NavLink>
+
+
+
+
+
+
+
+
+
+@code {
+
+    
+
+    [Parameter]
+    public Product Item { get; set; }
+    public string Href { get; set; }
+
+
+
+    protected override void OnInitialized()
+    {
+
+        Href = "product/" + Item.Id.ToString();
+
+    }
+
+
+
+
+
+
+}

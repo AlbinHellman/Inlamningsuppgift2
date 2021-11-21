@@ -1,0 +1,43 @@
+﻿
+<div class="container mt-5">
+    <div class="col-12">
+<div class="list-group">
+
+    @if (users == null)
+    {
+        <p>Loading users</p>
+    }
+    else
+    { 
+
+
+    @foreach (var user in users)
+    {
+                <UserItem Item="@user" />
+    }
+    }
+    </div>
+        </div>
+
+</div>
+
+@code {
+    private User[] users;
+
+    private async Task GetUsersAsync()
+    {
+        users = await Http.GetFromJsonAsync<User[]>("https://localhost:44320/api/Users");
+    }
+
+    protected override void OnInitialized()
+    {
+        var timer = new Timer(new TimerCallback(_ => InvokeAsync(() => StateHasChanged())), null, 1000, 1000);
+    }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await GetUsersAsync();
+    }
+
+}

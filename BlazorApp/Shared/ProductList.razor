@@ -1,0 +1,115 @@
+﻿
+
+
+<div class="d-flex justify-content-center">
+    <i class="fas fa-shopping-cart me-2"></i>
+
+    @if (cart.Any())
+    {<h2>Your Cart</h2>
+
+        @foreach (Product product in cart)
+        {
+            <li class="list-group-item p-2">
+                <button class="btn btn-sm"
+                        @onclick="@(() => DeleteProduct(product))">
+                    <div class="container">
+                        <span class="btn-danger">
+                            X
+                        </span>
+                    </div>
+                </button>
+                @product.Name @product.Description @product.Size @product.ListPrice
+            </li>
+
+
+            <div>
+                <h3>$ @total</h3>
+            </div>
+        }
+
+    }
+
+</div>
+    
+    
+
+
+
+
+<div class="container mt-5">
+    <div class="col-15">
+
+
+
+
+
+
+        @if (products == null)
+        {
+            <p>Loading products</p>
+        }
+        else
+        {
+
+            @foreach (var product in products)
+            {
+                <ProductItem Item="@product" />
+                <button class="btn btn-secondary"
+                        @onclick="@(() => AddProduct(product))">
+                    Lägg till i kundvagnen
+                </button>
+            }
+        }
+
+
+
+    </div>
+    </div>
+    
+    
+
+
+
+
+
+
+
+        @code {
+            
+            public IList<Product> cart = new List<Product>();
+            private decimal total;
+           
+
+            private Product[] products;
+
+            private async Task GetProductsAsync()
+            {
+                products = await Http.GetFromJsonAsync<Product[]>("https://localhost:44320/api/products");
+
+            }
+
+            protected override void OnInitialized()
+            {
+                var timer = new Timer(new TimerCallback(_ => InvokeAsync(() => StateHasChanged())), null, 1000, 1000);
+            }
+
+            protected override async Task OnAfterRenderAsync(bool firstRender)
+            {
+                await GetProductsAsync();
+            }
+
+            private void AddProduct(Product product)
+            {
+                cart.Add(product);
+                total += product.ListPrice;
+              
+            }
+
+            private void DeleteProduct(Product product)
+            {
+                cart.Remove(product);
+                total += product.ListPrice;
+            
+            }
+
+        }
